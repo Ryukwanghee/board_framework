@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--<typeAlias type="com.codingrecipe.board.dto.BoardDTO" alias="board"></typeAlias> mybatis-config에서 이렇게 별칭을 지정했음 그래서 parameterType에 board만 쓸 수 있는거임-->
+<mapper namespace="Board">
+    <insert id="save" parameterType="board">
+        insert into board_table(boardWriter, boardPass, boardTitle, boardContents)
+        values(#{boardWriter}, #{boardPass}, #{boardTitle}, #{boardContents})
+    </insert>
+
+    <select id="findAll" resultType="board">
+        select *
+        from board_table
+        order by id desc
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="board">
+        select *
+        from board_table
+        where id=#{id}
+        order by id desc
+    </select>
+
+    <update id="updateHits" parameterType="Long">
+        update board_table
+        set boardHits = boardHits + 1
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        delete from board_table
+        where id=#{id}
+    </delete>
+
+    <update id="update" parameterType="board">
+        update board_table
+        set boardTitle=#{boardTitle},
+            boardContents=#{boardContents}
+        where id=#{id}
+    </update>
+</mapper>
