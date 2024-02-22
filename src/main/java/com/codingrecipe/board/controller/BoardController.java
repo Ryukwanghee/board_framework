@@ -85,4 +85,14 @@ public class BoardController {
         return "detail";
         // 얘는 조회수를 더 올려버리는 코드가 있기때문에 얘는 생략 return "redirect:/board?id=" + boardDTO.getId();
     }
+
+    //  /board/paging?page=?  이렇게 출력, 페이지 값을 보내도록
+    // 처음 페이지 요청은 1페이지를 보여줌
+    @GetMapping("/paging")
+    public String paging(Model model,
+                         @RequestParam(value = "page", required = false, defaultValue = "1") int page) { //페이징 처리는 데이터를 가지고 화면에 출력하기 때문에 model 필요
+                            // false는 필수가 아니다. value속성이 파라미터 이름이 되는 값
+        System.out.println("page + " + page);
+        return "index";
+    }
 }
