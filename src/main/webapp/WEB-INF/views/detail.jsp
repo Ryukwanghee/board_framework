@@ -64,7 +64,7 @@
 <script>
     const listFn = () => {
         const page = '${page}';
-        location.href = "/board/paging?page=" + page;
+        location.href = "/board/paging?page=" + page; /* 페이지를 가져와서 몇페이지인지 출력해줘야함 */
     }
     const updateFn = () => {
         const id = '${board.id}';

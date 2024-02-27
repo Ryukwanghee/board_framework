@@ -1,6 +1,7 @@
 package com.codingrecipe.board.controller;
 
 import com.codingrecipe.board.dto.BoardDTO;
+import com.codingrecipe.board.dto.PageDTO;
 import com.codingrecipe.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class BoardController {
         * */
         int saveResult = boardService.save(boardDTO);
         if (saveResult > 0) {
-            return "redirect:/board/";
+            return "redirect:/board/paging"; //글 작성했을때도 페이징 목록으로 가게끔
         } else {
             return "save";
         }
@@ -56,16 +57,18 @@ public class BoardController {
     }
 
     @GetMapping
-    public String findById(@RequestParam("id") Long id, Model model){
+    public String findById(@RequestParam("id") Long id, Model model,
+                           @RequestParam(value = "page", required = false, defaultValue = "1") int page){
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
+        model.addAttribute("page", page);
         return "detail";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Long id) { //DB쪽에서 꺼내는게 없으니까 model X
-        boardService.delte(id);
+        boardService.delete(id);
         return "redirect:/board/";
     }
 
@@ -92,7 +95,15 @@ public class BoardController {
     public String paging(Model model,
                          @RequestParam(value = "page", required = false, defaultValue = "1") int page) { //페이징 처리는 데이터를 가지고 화면에 출력하기 때문에 model 필요
                             // false는 필수가 아니다. value속성이 파라미터 이름이 되는 값
-        System.out.println("page + " + page);
-        return "index";
+
+        System.out.println("page = " + page);
+        // 해당 페이지에서 보여줄 글 목록
+        List<BoardDTO> pagingList = boardService.pagingList(page);
+        System.out.println("pagingList = " + pagingList);
+        PageDTO pageDTO = boardService.pagingParam(page);
+        model.addAttribute("boardList", pagingList);
+        model.addAttribute("paging", pageDTO);
+        return "paging";
     }
+
 }
