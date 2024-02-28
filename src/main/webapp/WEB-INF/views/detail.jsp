@@ -79,7 +79,7 @@
         const writer = document.getElementById("commentWriter").value;
         const contents = document.getElementById("commentContents").value;
         const board = '${board.id}';
-        $.ajax({
+        $.ajax({ /* 여기서 작성한 내용이 dto에 잘 담겨서 controller에 잘 넘어가는 지 확인하려고 commentController에 sout 찍어본 것 */
             type: "post",
             url: "/comment/save",
             data: {
@@ -90,6 +90,7 @@
             dataType: "json",
             success: function(commentList) {
                 console.log("작성성공");
+                /* controller에서 responsebody 사용해서 응답을 보냄*/
                 console.log(commentList);
                 let output = "<table>";
                 output += "<tr><th>댓글번호</th>";

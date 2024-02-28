@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@RequiredArgsConstructor
+@RequiredArgsConstructor /* 이 어노테이션은 생성자 주입 방식임, @Autowired는 필드 주입 => 즉 둘 다 의존성 주입임 */
 public class BoardRepository {
 
     private final SqlSessionTemplate sql; //mybatis에서 제공하는 클래스로 자바클래스와 mapper간에 연결을 해주는 클래스
