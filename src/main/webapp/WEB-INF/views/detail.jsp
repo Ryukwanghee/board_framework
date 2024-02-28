@@ -49,6 +49,7 @@
             <th>작성자</th>
             <th>내용</th>
             <th>작성시간</th>
+            <th>삭제</th> <!-- 새로운 열 추가 -->
         </tr>
         <c:forEach items="${commentList}" var="comment">
             <tr>
@@ -56,10 +57,14 @@
                 <td>${comment.commentWriter}</td>
                 <td>${comment.commentContents}</td>
                 <td>${comment.commentCreatedTime}</td>
+                <td>
+                    <button onclick="deleteComment(${comment.id})">삭제</button> <!-- 삭제 버튼 -->
+                </td>
             </tr>
         </c:forEach>
     </table>
 </div>
+
 </body>
 <script>
     const listFn = () => {
@@ -103,6 +108,7 @@
                     output += "<td>"+commentList[i].commentWriter+"</td>";
                     output += "<td>"+commentList[i].commentContents+"</td>";
                     output += "<td>"+commentList[i].commentCreatedTime+"</td>";
+                    output += "<td><button onclick=\"deleteComment(" + commentList[i].id + ")\">삭제</button></td>";
                     output += "</tr>";
                 }
                 output += "</table>";
@@ -115,5 +121,27 @@
             }
         });
     }
+
+    const deleteComment = (commentId) => {
+        const board = '${board.id}';
+        if (confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "post",
+                url: "/comment/delete",
+                data: {
+                    id : commentId,
+                    boardId : board
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log("댓글 삭제 성공");
+                    window.location.reload();
+                },
+                error: function() {
+                    console.log("댓글 삭제 실패");
+                }
+            });
+        }
+    };
 </script>
 </html>

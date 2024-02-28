@@ -4,10 +4,7 @@ import com.codingrecipe.board.dto.CommentDTO;
 import com.codingrecipe.board.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,14 @@ public class CommentController {
         // ----save가 끝나면 list가져와서 출력
         // findAll() 기준 해당 게시글에 작성된 댓글 리스트를 가져옴
         List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
+        return commentDTOList;
+    }
+
+    @PostMapping("/delete")
+    public @ResponseBody List<CommentDTO> delete(@RequestParam("id") Long id, @RequestParam("boardId") Long boardId) {
+        commentService.delete(id);
+        //삭제후 삭제된 댓글 제회하고 반환해야하므로
+        List<CommentDTO> commentDTOList = commentService.findAll(boardId);
         return commentDTOList;
     }
 }

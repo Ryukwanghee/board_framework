@@ -14,4 +14,9 @@
         where boardId=#{boardId}
         order by id desc
     </select>
+
+    <delete id="delete" parameterType="Long">
+        delete from comment_table
+        where id=#{id}
+    </delete>
 </mapper>
